@@ -5,6 +5,8 @@ metadata:
     run: haproxy-ingress
   name: haproxy-kubernetes-ingress
   namespace: haproxy-controller
+  annotations: 
+    external-dns.alpha.kubernetes.io/hostname: footest.kind.learn.entigo.io
 spec:
   selector:
     run: haproxy-ingress
