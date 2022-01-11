@@ -9,7 +9,7 @@ metadata:
     ingress.kubernetes.io/ssl-redirect: "false"
 spec:
   rules:
-  - host: prometheus-{{ "{{" }} .Values.runenv {{ "{{" }}.kind.learn.entigo.io
+  - host: prometheus-{{ .Values.runenv }}.kind.learn.entigo.io
     http:
       paths:
       - path: /
