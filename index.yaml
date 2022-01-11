@@ -3,12 +3,12 @@ entries:
   entigo-training-application:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2022-01-11T16:10:15.02838936+02:00"
+    created: "2022-01-11T16:12:50.693335842+02:00"
     description: entigo-training-application chart for Kubernetes
     digest: c14fe36741d23c8fcf25f8c9b5339307725caef6f53c38b6c976aa68540e7925
     name: entigo-training-application
     type: application
     urls:
-    - https://github.com/martivo/kind-lab-thesis/entigo-training-application-1.0.0.tgz
+    - https://martivo.github.io/kind-lab-thesis/entigo-training-application-1.0.0.tgz
     version: 1.0.0
-generated: "2022-01-11T16:10:15.027957664+02:00"
+generated: "2022-01-11T16:12:50.692949093+02:00"

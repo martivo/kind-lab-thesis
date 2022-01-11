@@ -10,7 +10,7 @@ spec:
   project: default
   source:
     chart: entigo-training-application
-    repoURL: https://github.com/martivo/kind-lab-thesis.git
+    repoURL: https://martivo.github.io/kind-lab-thesis/
     targetRevision: 1.0.0
     helm:
       releaseName: entigo-training-application
