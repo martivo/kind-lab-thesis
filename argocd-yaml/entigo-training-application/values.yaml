@@ -3,11 +3,11 @@ runenv: single
 
 web:
   replicaCount: 2
-  image: entigolabs/entigo-kubernetes-training:web-v1
+  image: entigolabs/entigo-kubernetes-training-application:web-v1
   
 api:
   replicaCount: 2
-  image: entigolabs/entigo-kubernetes-training:api-v1
+  image: entigolabs/entigo-kubernetes-training-application:api-v1
   redisHost: redis
 
 redis:

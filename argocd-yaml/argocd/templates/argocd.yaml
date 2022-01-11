@@ -3009,7 +3009,7 @@ data:
           hs = {}
           hs.status = "Healthy"
           return hs
-
+#https://github.com/argoproj/argo-cd/issues/1704#issuecomment-621736069
 ---
 apiVersion: v1
 kind: ConfigMap
