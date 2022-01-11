@@ -102,7 +102,7 @@ metadata:
   namespace: haproxy-controller
 data:
   ssl-certificate: "haproxy-controller/ssl"
-  prometheus-port: "9105"
+
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -161,7 +161,7 @@ spec:
       labels:
         run: haproxy-ingress
       annotations:
-        prometheus.io/port: "9105"
+        prometheus.io/port: "1024"
         prometheus.io/scrape: "true"
     spec:
       serviceAccountName: haproxy-kubernetes-ingress
