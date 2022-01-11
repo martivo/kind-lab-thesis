@@ -13,8 +13,6 @@ spec:
     targetRevision: HEAD
     helm:
       parameters:
-      - name: runenv
-        value: {{ .Values.runenv }}
       - name: iprange
         value: {{ .Values.iprange }}
   syncPolicy:
