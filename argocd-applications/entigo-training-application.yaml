@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: entigo-training-application
+  namespace: argocd
+spec:
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  project: default
+  source:
+    chart: entigo-training-application
+    repoURL: https://github.com/martivo/kind-lab-thesis.git
+    targetRevision: 1.0.0
+    helm:
+      releaseName: entigo-training-application
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
