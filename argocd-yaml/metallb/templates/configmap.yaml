@@ -9,4 +9,4 @@ data:
     - name: default
       protocol: layer2
       addresses:
-      - {{ .Values.iprange }} #docker network inspect -f '{{.IPAM.Config}}' kind
+      - {{ .Values.iprange }} 
