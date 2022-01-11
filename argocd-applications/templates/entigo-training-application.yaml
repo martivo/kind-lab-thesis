@@ -1,18 +1,21 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: metallb
+  name: entigo-training-application
   namespace: argocd
 spec:
   destination:
     server: https://kubernetes.default.svc
+    namespace: default
   project: default
-  source:
-    directory:
-      recurse: true
-    path: argocd-yaml/metallb
+  source:      
+    path: argocd-yaml/entigo-training-application
     repoURL: https://github.com/martivo/kind-lab-thesis.git
     targetRevision: HEAD
+    helm:
+      parameters:
+      - name: runenv
+        value: {{ .Values.runenv }}
   syncPolicy:
     automated:
       prune: true

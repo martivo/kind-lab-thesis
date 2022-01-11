@@ -1,17 +1,20 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: entigo-training-application
+  name: argocd
   namespace: argocd
 spec:
   destination:
     server: https://kubernetes.default.svc
-    namespace: default
   project: default
-  source:      
-    path: argocd-yaml/entigo-training-application
+  source:
+    path: argocd-yaml/argocd
     repoURL: https://github.com/martivo/kind-lab-thesis.git
     targetRevision: HEAD
+    helm:
+      parameters:
+      - name: runenv
+        value: {{ .Values.runenv }}
   syncPolicy:
     automated:
       prune: true

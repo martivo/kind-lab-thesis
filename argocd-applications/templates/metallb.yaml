@@ -1,24 +1,23 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: argocd-applications
+  name: metallb
   namespace: argocd
 spec:
   destination:
     server: https://kubernetes.default.svc
   project: default
   source:
+    path: argocd-yaml/metallb
+    repoURL: https://github.com/martivo/kind-lab-thesis.git
+    targetRevision: HEAD
     helm:
       parameters:
       - name: runenv
-        value: #RUNENV#
+        value: {{ .Values.runenv }}
       - name: iprange
-        value: #IPRANGE#
-    path: argocd-applications
-    repoURL: https://github.com/martivo/kind-lab-thesis.git
-    targetRevision: HEAD
+        value: {{ .Values.iprange }}
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
-
