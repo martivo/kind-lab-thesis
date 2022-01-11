@@ -6,7 +6,7 @@ metadata:
   name: haproxy-kubernetes-ingress
   namespace: haproxy-controller
   annotations: 
-    external-dns.alpha.kubernetes.io/hostname: "*.kind.learn.entigo.io"
+    external-dns.alpha.kubernetes.io/hostname: "*kind-multi-a.kind.learn.entigo.io"
 spec:
   selector:
     run: haproxy-ingress
