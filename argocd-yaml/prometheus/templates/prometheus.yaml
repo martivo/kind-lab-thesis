@@ -9,7 +9,7 @@ metadata:
     ingress.kubernetes.io/ssl-redirect: "false"
 spec:
   rules:
-  - host: prometheus-{{ .Values.runenv }}.kind.learn.entigo.io
+  - host: prometheus-{{ "{{" }} .Values.runenv }}.kind.learn.entigo.io
     http:
       paths:
       - path: /
@@ -427,7 +427,7 @@ data:
         labels:
           severity: error
         annotations:
-          summary: "Prometheus configuration reload (instance {{ $labels.instance }}) in {{ $externalLabels.location }}.\n"
+          summary: "Prometheus configuration reload (instance {{ "{{" }} $labels.instance }}) in {{ "{{" }} $externalLabels.location }}.\n"
           description: "Prometheus configuration reload error.\n"
       - alert: AlertmanagerConfigurationReload
         expr: alertmanager_config_last_reload_successful != 1
@@ -435,7 +435,7 @@ data:
         labels:
           severity: error
         annotations:
-          summary: "AlertManager configuration reload (instance {{ $labels.instance }}) in {{ $externalLabels.location }}.\n"
+          summary: "AlertManager configuration reload (instance {{ "{{" }} $labels.instance }}) in {{ "{{" }} $externalLabels.location }}.\n"
           description: "AlertManager configuration reload error.\n"
       - alert: ExporterDown
         expr: up == 0
@@ -443,7 +443,7 @@ data:
         labels:
           severity: warning
         annotations:
-          summary: "Exporter down (instance {{ $labels.instance }}) in {{ $externalLabels.location }}.\n"
+          summary: "Exporter down (instance {{ "{{" }} $labels.instance }}) in {{ "{{" }} $externalLabels.location }}.\n"
           description: "Prometheus exporter down.\n"
     - name: Node_Exporter
       rules:
@@ -454,8 +454,8 @@ data:
           severity: warning
           env: prod
         annotations:
-          title: "Node {{ $labels.instance }} is down in {{ $externalLabels.location }}.\n"
-          description: "Failed to scrape {{ $labels.job }} on {{ $labels.instance }} for more than 5 minutes. Node seems down."
+          title: "Node {{ "{{" }} $labels.instance }} is down in {{ "{{" }} $externalLabels.location }}.\n"
+          description: "Failed to scrape {{ "{{" }} $labels.job }} on {{ "{{" }} $labels.instance }} for more than 5 minutes. Node seems down."
       - alert: OutOfMemory
         expr: (node_memory_MemFree_bytes + node_memory_Cached_bytes + node_memory_Buffers_bytes) / node_memory_MemTotal_bytes * 100 < 10
         for: 5m
@@ -463,7 +463,7 @@ data:
           severity: warning
           env: prod
         annotations:
-          summary: "Out of memory (instance {{ $labels.instance }}) in {{ $externalLabels.location }}.\n"
+          summary: "Out of memory (instance {{ "{{" }} $labels.instance }}) in {{ "{{" }} $externalLabels.location }}.\n"
           description: "Node memory is filling up (< 10% left).\n"
       - alert: UnusualNetworkThroughputIn
         expr: sum by (instance) (irate(node_network_receive_bytes_total[2m])) / 1024 / 1024 > 100
@@ -472,23 +472,23 @@ data:
           severity: warning
           env: prod
         annotations:
-          summary: "Unusual network throughput in (instance {{ $labels.instance }}) in {{ $externalLabels.location }}.\n"
-          description: "Host network interfaces are probably receiving too much data (> 100 MB/s)\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
+          summary: "Unusual network throughput in (instance {{ "{{" }} $labels.instance }}) in {{ "{{" }} $externalLabels.location }}.\n"
+          description: "Host network interfaces are probably receiving too much data (> 100 MB/s)\n  VALUE = {{ "{{" }} $value }}\n  LABELS: {{ "{{" }} $labels }}"
       - alert: UnusualNetworkThroughputOut
         expr: sum by (instance) (irate(node_network_transmit_bytes_total[2m])) / 1024 / 1024 > 100
         for: 5m
         labels:
           severity: warning
         annotations:
-          summary: "Unusual network throughput out (instance {{ $labels.instance }}) in {{ $externalLabels.location }}.\n"
-          description: "Host network interfaces are probably sending too much data (> 100 MB/s)\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
+          summary: "Unusual network throughput out (instance {{ "{{" }} $labels.instance }}) in {{ "{{" }} $externalLabels.location }}.\n"
+          description: "Host network interfaces are probably sending too much data (> 100 MB/s)\n  VALUE = {{ "{{" }} $value }}\n  LABELS: {{ "{{" }} $labels }}"
       - alert: UnusualDiskWriteRate
         expr: sum by (instance) (irate(node_disk_written_bytes_total[2m])) / 1024 / 1024 > 50
         for: 5m
         labels:
           severity: warning
         annotations:
-          summary: "Unusual disk write rate (instance {{ $labels.instance }}) in {{ $externalLabels.location }}\n"
+          summary: "Unusual disk write rate (instance {{ "{{" }} $labels.instance }}) in {{ "{{" }} $externalLabels.location }}\n"
           description: "Disk is probably writing too much data (> 50 MB/s).\n"
       - alert: OutOfDiskSpace
         expr: node_filesystem_free_bytes / node_filesystem_size_bytes * 100 < 10
@@ -497,15 +497,15 @@ data:
           severity: warning
           env: prod
         annotations:
-          summary: "Out of disk space (instance {{ $labels.instance }}) in {{ $externalLabels.location }}.\n"
-          description: "Disk is almost full (< 10% left)\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
+          summary: "Out of disk space (instance {{ "{{" }} $labels.instance }}) in {{ "{{" }} $externalLabels.location }}.\n"
+          description: "Disk is almost full (< 10% left)\n  VALUE = {{ "{{" }} $value }}\n  LABELS: {{ "{{" }} $labels }}"
       - alert: OutOfInodes
         expr: node_filesystem_files_free / node_filesystem_files * 100 < 10
         for: 5m
         labels:
           severity: warning
         annotations:
-          summary: "Out of inodes (instance {{ $labels.instance }}) in {{ $externalLabels.location }}\n"
+          summary: "Out of inodes (instance {{ "{{" }} $labels.instance }}) in {{ "{{" }} $externalLabels.location }}\n"
           description: "Disk is almost running out of available inodes (< 10% left).\n"
       - alert: UnusualDiskReadLatency
         expr: rate(node_disk_read_time_seconds_total[1m]) / rate(node_disk_reads_completed_total[1m]) > 100
@@ -513,7 +513,7 @@ data:
         labels:
           severity: warning
         annotations:
-          summary: "Unusual disk read latency (instance {{ $labels.instance }}) in {{ $externalLabels.location }}\n"
+          summary: "Unusual disk read latency (instance {{ "{{" }} $labels.instance }}) in {{ "{{" }} $externalLabels.location }}\n"
           description: "Disk latency is growing (read operations > 100ms).\n"
       - alert: UnusualDiskWriteLatency
         expr: rate(node_disk_write_time_seconds_total[1m]) / rate(node_disk_writes_completed_total[1m]) > 100
@@ -521,7 +521,7 @@ data:
         labels:
           severity: warning
         annotations:
-          summary: "Unusual disk write latency (instance {{ $labels.instance }}) in {{ $externalLabels.location }}\n."
+          summary: "Unusual disk write latency (instance {{ "{{" }} $labels.instance }}) in {{ "{{" }} $externalLabels.location }}\n."
           description: "Disk latency is growing (write operations > 100ms)\n"
       - alert: HighCpuLoad
         expr: 100 - (avg by(instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80
@@ -529,7 +529,7 @@ data:
         labels:
           severity: warning
         annotations:
-          summary: "High CPU load (instance {{ $labels.instance }}) in {{ $externalLabels.location }}\n"
+          summary: "High CPU load (instance {{ "{{" }} $labels.instance }}) in {{ "{{" }} $externalLabels.location }}\n"
           description: "CPU load is > 80%.\n"
     - name: KubeSystem
       rules:
@@ -540,8 +540,8 @@ data:
           severity: crit
           env: prod
         annotations:
-          summary: "KubeDNS is down in {{ $externalLabels.location }}\n"
-          description: " {{ $labels.k8s_app }} instance {{ $labels.instance }} is down\n"
+          summary: "KubeDNS is down in {{ "{{" }} $externalLabels.location }}\n"
+          description: " {{ "{{" }} $labels.k8s_app }} instance {{ "{{" }} $labels.instance }} is down\n"
       - alert: cAdvisorNotRunning
         expr: up{job="kubernetes-cadvisor"} != 1
         for: 1m
@@ -549,8 +549,8 @@ data:
           severity: crit
           env: prod
         annotations:
-          summary: "cAdvisor is down in {{ $externalLabels.location }}\n"
-          description: "{{ $labels.k8s_app }} instance {{ $labels.instance }} is down\n"
+          summary: "cAdvisor is down in {{ "{{" }} $externalLabels.location }}\n"
+          description: "{{ "{{" }} $labels.k8s_app }} instance {{ "{{" }} $labels.instance }} is down\n"
       - alert: KubeApiServersDown
         expr: up{job="kubernetes-apiservers"} != 1
         for: 1m
@@ -558,8 +558,8 @@ data:
           severity: crit
           env: prod
         annotations:
-          summary: "Kubernetes Apiserver is down in {{ $externalLabels.location }}\n"
-          description: "{{ $labels.instance }} is down\n"
+          summary: "Kubernetes Apiserver is down in {{ "{{" }} $externalLabels.location }}\n"
+          description: "{{ "{{" }} $labels.instance }} is down\n"
       - alert: KubeNodeDown
         expr: up{job="kubernetes-nodes"} != 1
         for: 1m
@@ -567,31 +567,31 @@ data:
           severity: crit
           env: prod
         annotations:
-          summary: "Kubernetes node is down in {{ $externalLabels.location }}\n"
-          description: "Kubernetes node {{ $labels.instance }} is down\n"
+          summary: "Kubernetes node is down in {{ "{{" }} $externalLabels.location }}\n"
+          description: "Kubernetes node {{ "{{" }} $labels.instance }} is down\n"
       - alert: KubeletCertificateExpiryInNinetyD
         expr: (kubelet_certificate_manager_server_expiration_seconds) - time () <  86400 * 90
         for: 1m
         labels:
           severity: warn
         annotations:
-          summary: "Kubelet apiserver certificate will expire in 90 days in {{ $externalLabels.location }}.\n"
-          description: "Kubelet apiserver certificate will expire in 90 days for instance {{ $labels.instance }}.\n"
+          summary: "Kubelet apiserver certificate will expire in 90 days in {{ "{{" }} $externalLabels.location }}.\n"
+          description: "Kubelet apiserver certificate will expire in 90 days for instance {{ "{{" }} $labels.instance }}.\n"
       - alert: KubeletCertificateExpiryInThirtyD
         expr: (kubelet_certificate_manager_server_expiration_seconds) - time () <  86400 * 30
         for: 1m
         labels:
           severity: crit
         annotations:
-          summary: "Kubelet apiserver certificate will expire in 90 days in {{ $externalLabels.location }}.\n"
-          description: "Kubelet apiserver certificate will expire in 90 days for instance {{ $labels.instance }}.\n"          
+          summary: "Kubelet apiserver certificate will expire in 90 days in {{ "{{" }} $externalLabels.location }}.\n"
+          description: "Kubelet apiserver certificate will expire in 90 days for instance {{ "{{" }} $labels.instance }}.\n"          
       - alert: PvcEightyFull
         expr: (kubelet_volume_stats_used_bytes / kubelet_volume_stats_capacity_bytes) * 100 >= 80 
         for: 5m
         labels:
           severity: warn
         annotations:
-          summary: "The PVC {{ $labels.persistentvolumeclaim }} is over 80% full in namespace {{ $labels.namespace }}.\n"          
+          summary: "The PVC {{ "{{" }} $labels.persistentvolumeclaim }} is over 80% full in namespace {{ "{{" }} $labels.namespace }}.\n"          
       - alert: PvcNinetyFull
         expr: (kubelet_volume_stats_used_bytes / kubelet_volume_stats_capacity_bytes) * 100 >= 90 
         for: 5m
@@ -599,22 +599,22 @@ data:
           severity: crit
           env: prod
         annotations:
-          summary: "The PVC {{ $labels.persistentvolumeclaim }} is over 90% full in namespace {{ $labels.namespace }}.\n"          
+          summary: "The PVC {{ "{{" }} $labels.persistentvolumeclaim }} is over 90% full in namespace {{ "{{" }} $labels.namespace }}.\n"          
       - alert: ContainerNotRunningInPod
         expr: (kube_pod_container_status_running == 0 or kube_pod_container_status_ready == 0) and kube_pod_container_status_terminated == 0
         for: 10m
         labels:
           severity: error
-          env: '{{ $labels.namespace }}'
+          env: '{{ "{{" }} $labels.namespace }}'
         annotations:
-          summary: "Pod {{ $labels.pod }} ({{ $labels.container }}) in {{ $labels.namespace }} not running at {{ $externalLabels.location }}\n"
+          summary: "Pod {{ "{{" }} $labels.pod }} ({{ "{{" }} $labels.container }}) in {{ "{{" }} $labels.namespace }} not running at {{ "{{" }} $externalLabels.location }}\n"
       - alert: ContainerStuckInTerminatingStatus
         expr: kube_pod_container_status_terminated{container!~"istio-init-crd-.*"} != 0 and kube_pod_container_status_last_terminated_reason{reason!="Completed"} == 1
         for: 1h
         labels:
           severity: error
         annotations:
-          summary: "Pod {{ $labels.pod }} ({{ $labels.container }}) in {{ $labels.namespace }} is stuck in Terminating status at {{ $externalLabels.location }}\n"
+          summary: "Pod {{ "{{" }} $labels.pod }} ({{ "{{" }} $labels.container }}) in {{ "{{" }} $labels.namespace }} is stuck in Terminating status at {{ "{{" }} $externalLabels.location }}\n"
 ---
 apiVersion: v1
 kind: Service
