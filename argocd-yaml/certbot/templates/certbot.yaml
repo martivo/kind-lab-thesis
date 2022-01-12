@@ -72,4 +72,4 @@ spec:
       - name: certbot
         hostPath:
           path: /data/cert
-          type: Directory
+          type: DirectoryOrCreate
