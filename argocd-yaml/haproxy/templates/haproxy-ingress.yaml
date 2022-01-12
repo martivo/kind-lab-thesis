@@ -10,7 +10,7 @@ kind: IngressClass
 metadata:
   name: {{ .Release.Name }}
   annotations:
-    ingressclass.kubernetes.io/is-default-class: {{ .Values.isdefault }}
+    ingressclass.kubernetes.io/is-default-class: "{{ .Values.isdefault }}"
 spec:
   controller: haproxy.org/{{ .Release.Name }}/{{ .Release.Name }}
 ---
