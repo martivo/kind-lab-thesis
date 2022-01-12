@@ -163,8 +163,8 @@ spec:
       - name: haproxy-ingress
         image: haproxytech/kubernetes-ingress:1.7.3
         args:
-          - --configmap=haproxy-controller/{{ .Release.Name }}-ingress
-          - --default-backend-service=haproxy-controller/{{ .Release.Name }}-ingress-default-backend
+          - --configmap={{ .Release.Name }}/{{ .Release.Name }}-ingress
+          - --default-backend-service={{ .Release.Name }}/{{ .Release.Name }}-ingress-default-backend
           - --http-bind-port={{ .Values.httpport }} --https-bind-port={{ .Values.httpsport }}
         securityContext:
           runAsUser:  1000
