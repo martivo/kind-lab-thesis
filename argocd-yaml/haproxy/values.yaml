@@ -1,0 +1,6 @@
+
+
+route53domain: ""
+httpport: "80"
+httpsport: "443"
+monitoringport: "1024"
