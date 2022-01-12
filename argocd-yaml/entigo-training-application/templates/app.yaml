@@ -115,6 +115,7 @@ metadata:
   annotations:
     ingress.kubernetes.io/ssl-redirect: "false"
 spec:
+  ingressClassName: "haproxy-ext"
   rules:
   - host: "web.{{ .Values.externaldomain }}"
     http:

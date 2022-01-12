@@ -23,6 +23,8 @@ spec:
         value: "8443"
       - name: monitoringport
         value: "1025"
+      - name: isdefault
+        value: "true"
   syncPolicy:
     automated:
       prune: true

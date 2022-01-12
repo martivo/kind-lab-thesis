@@ -23,6 +23,8 @@ spec:
         value: "443"
       - name: monitoringport
         value: "1024"
+      - name: isdefault
+        value: "false"
   syncPolicy:
     automated:
       prune: true
