@@ -25,6 +25,8 @@ spec:
         value: "1025"
       - name: isdefault
         value: "true"
+      - name: certsecret
+        value: "certbot-int/ssl"
   syncPolicy:
     automated:
       prune: true

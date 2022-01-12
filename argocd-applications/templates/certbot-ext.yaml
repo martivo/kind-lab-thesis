@@ -17,8 +17,6 @@ spec:
       parameters:
       - name: domain
         value: {{ .Values.externaldomain }}
-      - name: secretnamespace 
-        value: haproxy-ext
   syncPolicy:
     automated:
       prune: true

@@ -100,7 +100,7 @@ kind: ConfigMap
 metadata:
   name: {{ .Release.Name }}-ingress
 data:
-  ssl-certificate: "{{ .Release.Name }}/ssl"
+  ssl-certificate: "{{ .Values.certsecret }}"
 ---
 apiVersion: v1
 kind: ConfigMap

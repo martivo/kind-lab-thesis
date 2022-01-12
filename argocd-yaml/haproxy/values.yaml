@@ -5,3 +5,4 @@ httpport: "80"
 httpsport: "443"
 monitoringport: "1024"
 isdefault: true
+certsecret: ""
