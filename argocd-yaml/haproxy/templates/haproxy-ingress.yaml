@@ -168,7 +168,7 @@ spec:
           - --configmap={{ .Release.Name }}/{{ .Release.Name }}-ingress
           - --default-backend-service={{ .Release.Name }}/{{ .Release.Name }}-ingress-default-backend
           - --http-bind-port={{ .Values.httpport }} --https-bind-port={{ .Values.httpsport }}
-          - --ingress.class={{ .Release.Name }} {{ if eq $.Values.isdefault "true" }}--EmptyIngressClass{{ end }}
+          - --ingress.class={{ .Release.Name }} {{ if $.Values.isdefault }}--EmptyIngressClass{{ end }}
         securityContext:
           runAsUser:  1000
           runAsGroup: 1000
