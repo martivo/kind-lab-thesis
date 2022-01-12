@@ -73,7 +73,7 @@ spec:
         app: grafana
     spec:
       containers:
-      - image: ireg.learn.entigo.io/hub/grafana/grafana:7.2.1
+      - image: grafana/grafana:7.2.1
         imagePullPolicy: IfNotPresent
         name: grafana
         ports:
