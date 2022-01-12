@@ -47,7 +47,7 @@ spec:
       serviceAccountName: {{ .Release.Name }}
       containers:
       - name: {{ .Release.Name }}
-        image: entigolabs/entigo-kubernetes-training-application:certbot-v1
+        image: entigolabs/entigo-kubernetes-training:certbot-v1
         volumeMounts:
         - mountPath: /test-pd
           name: certbot
