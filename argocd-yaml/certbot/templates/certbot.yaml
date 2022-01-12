@@ -11,7 +11,7 @@ metadata:
   namespace: {{ .Values.secretnamespace }}
 rules:
 - apiGroups: [""]
-  resources: ["secret"]
+  resources: ["secrets"]
   verbs: ["get","list", "create", "update"]
 
 ---
@@ -49,7 +49,7 @@ spec:
       - name: {{ .Release.Name }}
         image: entigolabs/entigo-kubernetes-training:certbot-v1
         volumeMounts:
-        - mountPath: /test-pd
+        - mountPath: /etc/letsencrypt/
           name: certbot
         env:
         - name: AWS_ACCESS_KEY_ID
