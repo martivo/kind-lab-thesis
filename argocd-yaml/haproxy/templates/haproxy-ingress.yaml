@@ -98,7 +98,7 @@ kind: ConfigMap
 metadata:
   name: {{ .Release.Name }}-ingress
 data:
-  ssl-certificate: "haproxy-controller/ssl"
+  ssl-certificate: "{{ .Release.Name }}/ssl"
 
 ---
 apiVersion: apps/v1
