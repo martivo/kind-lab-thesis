@@ -18,11 +18,11 @@ spec:
       - name: route53domain
         value: {{ .Values.externaldomain }}
       - name: httpport
-        value: 80
+        value: "80"
       - name: httpsport
-        value: 443
+        value: "443"
       - name: monitoringport
-        value: 1024
+        value: "1024"
   syncPolicy:
     automated:
       prune: true

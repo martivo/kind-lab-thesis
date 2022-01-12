@@ -18,11 +18,11 @@ spec:
       - name: route53domain
         value: {{ .Values.internaldomain }}
       - name: httpport
-        value: 8080
+        value: "8080"
       - name: httpsport
-        value: 8443
+        value: "8443"
       - name: monitoringport
-        value: 1025
+        value: "1025"
   syncPolicy:
     automated:
       prune: true
