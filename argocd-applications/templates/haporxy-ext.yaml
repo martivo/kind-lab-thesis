@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: haproxy-ext
+  namespace: argocd
+spec:
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: haproxy-ext
+  project: default
+  source:
+    path: argocd-yaml/haproxy
+    repoURL: https://github.com/martivo/kind-lab-thesis.git
+    targetRevision: HEAD
+    helm:
+      releaseName: haproxy-ext
+      parameters:
+      - name: route53domain
+        value: {{ .Values.externaldomain }}
+      - name: httpport
+        value: 80
+      - name: httpsport
+        value: 443
+      - name: monitoringport
+        value: 1024
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true 
+    syncOptions:
+    - CreateNamespace=true
