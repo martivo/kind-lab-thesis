@@ -1,0 +1,75 @@
+#https://github.com/kubernetes-sigs/{{ .Release.Name }}/blob/master/docs/tutorials/aws.md
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ .Release.Name }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Values.secretnamespace }}
+rules:
+- apiGroups: [""]
+  resources: ["secret"]
+  verbs: ["get","list", "create", "update"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Values.secretnamespace }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: {{ .Release.Name }}
+subjects:
+- kind: ServiceAccount
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+spec:
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+    spec:
+      serviceAccountName: {{ .Release.Name }}
+      containers:
+      - name: {{ .Release.Name }}
+        image: entigolabs/entigo-kubernetes-training-application:{{ .Release.Name }}-v1
+        volumeMounts:
+        - mountPath: /test-pd
+          name: certbot
+        env:
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}
+              key: AWS_ACCESS_KEY_ID
+        - name: AWS_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}
+              key: AWS_SECRET_ACCESS_KEY
+        - name: DOMAIN
+          value: {{ .Values.domain }}
+        - name: EMAIL
+          value: {{ .Values.email }}
+        - name: NAMESPACE
+          value: {{ .Values.secretnamespace }}
+      volumes:
+      - name: certbot
+        hostPath:
+          path: /data/cert
+          type: Directory
