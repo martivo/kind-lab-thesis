@@ -5,7 +5,6 @@ metadata:
   annotations:
     haproxy.org/ssl-redirect: "true" #https://www.haproxy.com/documentation/kubernetes/latest/configuration/ingress/
 spec:
-  ingressClassName: "haproxy-int"
   rules:
   - host: argocd.{{ .Values.internaldomain }}
     http:
