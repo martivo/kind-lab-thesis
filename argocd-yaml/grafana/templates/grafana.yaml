@@ -22,7 +22,6 @@ metadata:
   namespace: monitoring
   annotations:
     ingress.kubernetes.io/ssl-redirect: "false"
-    kubernetes.io/ingress.class: "haproxy-int"
 spec:
   ingressClassName: "haproxy-int"
   rules:
