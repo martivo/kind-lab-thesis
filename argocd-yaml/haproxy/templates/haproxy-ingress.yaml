@@ -101,6 +101,12 @@ metadata:
   name: {{ .Release.Name }}-ingress
 data:
   ssl-certificate: "{{ .Release.Name }}/ssl"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-tcp
+data:
 
 ---
 apiVersion: apps/v1
@@ -168,7 +174,9 @@ spec:
           - --configmap={{ .Release.Name }}/{{ .Release.Name }}-ingress
           - --default-backend-service={{ .Release.Name }}/{{ .Release.Name }}-ingress-default-backend
           - --http-bind-port={{ .Values.httpport }} --https-bind-port={{ .Values.httpsport }}
-          - --ingress.class={{ .Release.Name }} {{ if $.Values.isdefault }}--EmptyIngressClass{{ end }}
+          - --ingress.class={{ .Release.Name }} {{ if $.Values.isdefault }}--empty-ingress-class{{ end }}
+          - --publish-service={{ .Release.Name }}/{{ .Release.Name }}-ingress
+          - --configmap-tcp-services={{ .Release.Name }}/{{ .Release.Name }}-tcp
         securityContext:
           runAsUser:  1000
           runAsGroup: 1000
