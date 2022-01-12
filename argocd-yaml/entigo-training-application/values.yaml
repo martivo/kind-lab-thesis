@@ -1,5 +1,6 @@
 
-runenv: single
+runenv: ""
+externaldomain: ""
 
 web:
   replicaCount: 2

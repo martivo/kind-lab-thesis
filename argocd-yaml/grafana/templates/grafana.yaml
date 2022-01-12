@@ -24,7 +24,7 @@ metadata:
     ingress.kubernetes.io/ssl-redirect: "false"
 spec:
   rules:
-  - host: grafana-{{ .Values.runenv }}.kind.learn.entigo.io
+  - host: grafana.{{ .Values.internaldomain }}
     http:
       paths:
       - path: /

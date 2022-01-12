@@ -13,9 +13,7 @@ spec:
     repoURL: https://github.com/martivo/kind-lab-thesis.git
     targetRevision: HEAD
     helm:
-      parameters:
-      - name: iprange
-        value: {{ .Values.iprange }}
+      releaseName: external-dns
   syncPolicy:
     automated:
       prune: true

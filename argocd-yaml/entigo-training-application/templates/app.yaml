@@ -116,7 +116,7 @@ metadata:
     ingress.kubernetes.io/ssl-redirect: "false"
 spec:
   rules:
-  - host: "web-{{ .Values.runenv }}.kind.learn.entigo.io"
+  - host: "web.{{ .Values.externaldomain }}"
     http:
       paths:
       - path: /

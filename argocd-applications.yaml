@@ -12,6 +12,10 @@ spec:
       parameters:
       - name: runenv
         value: #RUNENV#
+      - name: externaldomain
+        value: #RUNENV#.#DOMAIN#
+      - name: internaldomain
+        value: int-#RUNENV#.#DOMAIN#
       - name: iprange
         value: #IPRANGE#
     path: argocd-applications

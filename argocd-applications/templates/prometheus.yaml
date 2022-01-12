@@ -16,6 +16,8 @@ spec:
       parameters:
       - name: runenv
         value: {{ .Values.runenv }}
+      - name: internaldomain
+        value: {{ .Values.internaldomain }}
   syncPolicy:
     automated:
       prune: true
