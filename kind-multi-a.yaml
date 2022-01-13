@@ -2,10 +2,18 @@ kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
 name: multi-a
 networking:
-  podSubnet: "10.243.0.0/16"
-  serviceSubnet: "10.95.0.0/16"
+  podSubnet: "10.241.0.0/16"
+  serviceSubnet: "10.92.0.0/16"
   ipFamily: ipv4
 nodes:
+- role: control-plane
+  extraMounts:
+  - hostPath: ./shared/multi-a
+    containerPath: /data
+- role: control-plane
+  extraMounts:
+  - hostPath: ./shared/multi-a
+    containerPath: /data
 - role: control-plane
   extraMounts:
   - hostPath: ./shared/multi-a
@@ -14,6 +22,46 @@ nodes:
   extraMounts:
   - hostPath: ./shared/multi-a
     containerPath: /data
+  kubeadmConfigPatches:
+  - |
+    kind: JoinConfiguration
+    nodeRegistration:
+      kubeletExtraArgs:
+        node-labels: "ingress=true"
+        register-with-taints: "ingress=true:NoSchedule"
+- role: worker
+  extraMounts:
+  - hostPath: ./shared/multi-a
+    containerPath: /data
+  kubeadmConfigPatches:
+  - |
+    kind: JoinConfiguration
+    nodeRegistration:
+      kubeletExtraArgs:
+        node-labels: "ingress=true"
+        register-with-taints: "ingress=true:NoSchedule"
+- role: worker
+  extraMounts:
+  - hostPath: ./shared/multi-a
+    containerPath: /data
+  kubeadmConfigPatches:
+  - |
+    kind: JoinConfiguration
+    nodeRegistration:
+      kubeletExtraArgs:
+        node-labels: "monitoring=true"
+        register-with-taints: "monitoring=true:NoSchedule"
+- role: worker
+  extraMounts:
+  - hostPath: ./shared/multi-a
+    containerPath: /data
+  kubeadmConfigPatches:
+  - |
+    kind: JoinConfiguration
+    nodeRegistration:
+      kubeletExtraArgs:
+        node-labels: "monitoring=true"
+        register-with-taints: "monitoring=true:NoSchedule"
 - role: worker
   extraMounts:
   - hostPath: ./shared/multi-a

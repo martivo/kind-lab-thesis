@@ -18,6 +18,8 @@ spec:
         value: int-#RUNENV#.#DOMAIN#
       - name: iprange
         value: #IPRANGE#
+      - name: registry
+        value: #REGISTRY#
     path: argocd-applications
     repoURL: https://github.com/martivo/kind-lab-thesis.git
     targetRevision: HEAD

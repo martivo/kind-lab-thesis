@@ -18,7 +18,3 @@ nodes:
   extraMounts:
   - hostPath: ./shared/multi-b
     containerPath: /data
-- role: worker
-  extraMounts:
-  - hostPath: ./shared/multi-b
-    containerPath: /data
