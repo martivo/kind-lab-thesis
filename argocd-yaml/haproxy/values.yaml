@@ -6,3 +6,12 @@ httpsport: "443"
 monitoringport: "1024"
 isdefault: true
 certsecret: ""
+
+nodeSelector:
+  ingress: "true"
+
+tolerations:
+- key: "ingress"
+  operator: "Equal"
+  value: "true"
+  effect: "NoSchedule"
