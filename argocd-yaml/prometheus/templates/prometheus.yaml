@@ -618,6 +618,7 @@ metadata:
     app.kubernetes.io/name: kube-state-metrics
   annotations:
     prometheus.io/scrape: 'true'
+    prometheus.io/port: '8080'
   name: kube-state-metrics
   namespace: kube-system
 spec:
@@ -674,8 +675,6 @@ spec:
         ports:
         - containerPort: 8080
           name: http-metrics
-        - containerPort: 8081
-          name: telemetry
         readinessProbe:
           httpGet:
             path: /
