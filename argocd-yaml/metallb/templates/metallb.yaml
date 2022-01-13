@@ -441,8 +441,9 @@ spec:
       tolerations:
 {{ toYaml .Values.tolerations | indent 8 }}
 {{- end }}
-{{- if .Values.nodeSelector }}
       nodeSelector:
+        kubernetes.io/os: linux
+{{- if .Values.nodeSelector }}
 {{ toYaml .Values.nodeSelector | indent 8 }}
 {{- end }}
       containers:
@@ -484,8 +485,6 @@ spec:
             drop:
             - all
           readOnlyRootFilesystem: true
-      nodeSelector:
-        kubernetes.io/os: linux
       securityContext:
         runAsNonRoot: true
         runAsUser: 65534
