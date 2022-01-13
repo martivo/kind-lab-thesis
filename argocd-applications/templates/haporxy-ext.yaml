@@ -22,7 +22,7 @@ spec:
       - name: httpsport
         value: "443"
       - name: monitoringport
-        value: "1024"
+        value: "1026"
       - name: isdefault
         value: "false"
       - name: certsecret
