@@ -90,14 +90,20 @@ spec:
         volumeMounts:
         - name: grafana-datasource
           mountPath: "/etc/grafana/provisioning/datasources"
+        - name: grafana-data
+          mountPath: "/var/lib/grafana"
       restartPolicy: Always
       securityContext:
         fsGroup: 1000
         runAsUser: 0
       terminationGracePeriodSeconds: 30
       volumes:
-      - configMap:
+      - name: grafana-datasource
+        configMap:
           name: grafana-datasource
-        name: grafana-datasource
+      - name: grafana-data
+        hostPath:
+          path: /data/grafana
+          type: DirectoryOrCreate
 ---
  
