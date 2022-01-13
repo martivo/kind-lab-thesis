@@ -73,6 +73,14 @@ spec:
       labels:
         app: grafana
     spec:
+{{- if .Values.tolerations }}
+      tolerations:
+{{ toYaml .Values.tolerations | indent 8 }}
+{{- end }}
+{{- if .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | indent 8 }}
+{{- end }}
       containers:
       - image: grafana/grafana:7.2.1
         imagePullPolicy: IfNotPresent
