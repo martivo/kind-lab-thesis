@@ -42,6 +42,14 @@ spec:
       labels:
         app: {{ .Release.Name }}
     spec:
+{{- if .Values.tolerations }}
+      tolerations:
+{{ toYaml .Values.tolerations | indent 8 }}
+{{- end }}
+{{- if .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | indent 8 }}
+{{- end }}
       serviceAccountName: {{ .Release.Name }}
       containers:
       - name: {{ .Release.Name }}
