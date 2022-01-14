@@ -79,5 +79,5 @@ spec:
       volumes:
       - name: certbot
         hostPath:
-          path: /data/cert
+          path: /data/{{ .Release.Name }}
           type: DirectoryOrCreate
