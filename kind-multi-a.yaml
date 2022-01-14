@@ -70,3 +70,7 @@ nodes:
   extraMounts:
   - hostPath: ./shared/multi-a
     containerPath: /data
+- role: worker
+  extraMounts:
+  - hostPath: ./shared/multi-a
+    containerPath: /data
