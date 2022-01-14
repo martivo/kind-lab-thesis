@@ -1,8 +1,5 @@
 
-runenv: ""
-internaldomain: ""
-nodeselector: "node-role.kubernetes.io/control-plane="
-toleration: "node-role.kubernetes.io/master:NoSchedule"
+internaldomain: "local"
 
 nodeSelector:
   node-role.kubernetes.io/control-plane: ""
