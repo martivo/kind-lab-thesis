@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#Create kind clusters
+#Create kind kubernetes clusters
 ls -1 kind-* | while read kindfile
 do
   echo "Creating cluster from configuration file $kindfile"
@@ -11,7 +11,7 @@ done
 #List kind clusters
 kubectl config get-contexts | grep kind
 
-#Argocd bootstrap
+#Argocd and sealed secret private key bootstrap
 i=0
 kind get clusters | while read cluster
 do
@@ -26,6 +26,7 @@ echo "Initializing $cluster"
   let i++
 done
 
+#Fetch argocd password and load app of apps.
 i=0
 kind get clusters | while read cluster
 do
@@ -45,8 +46,7 @@ do
 done
 
 
-#Dump SealedSecrets key
-
+#Dump SealedSecrets key in case this is a new cluster.
 kind get clusters | while read cluster
 do
   if [ ! -f sealed-secret-keys/${cluster}.yaml ]
@@ -64,6 +64,9 @@ done
 
 exit 0
 
+
+#kubeseal 
+kubeseal --cert sealed-secret-keys/multi-a.pub --context kind-multi-a --format yaml  < certbot-secret-ext.yaml > argocd-yaml/sealed-secrets/multi-a/certbot-secret-ext.yaml
 
 #Manual
 https://github.com/kubernetes-sigs/external-dns/blob/master/docs/tutorials/aws.md
