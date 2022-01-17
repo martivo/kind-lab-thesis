@@ -5,7 +5,7 @@ ls -1 kind-* | while read kindfile
 do
   echo "Creating cluster from configuration file $kindfile"
   kind create cluster --config $kindfile
-  break
+  #break
 done
 
 #List kind clusters
@@ -54,7 +54,10 @@ do
     echo "Waiting for sealed-secrets key $cluster"
     while [ 1 -lt 2 ]
     do  
-	kubectl --context kind-$cluster get secrets -n kube-system -l sealedsecrets.bitnami.com/sealed-secrets-key=active && break
+	if [ "$(kubectl --context kind-$cluster get secrets -n kube-system -l sealedsecrets.bitnami.com/sealed-secrets-key=active | wc -l)" -ge 2 ]
+        then	
+	   break
+	fi
         sleep 10
     done
     kubectl --context kind-$cluster get secrets  -l sealedsecrets.bitnami.com/sealed-secrets-key=active -n kube-system -o yaml | kubectl-neat  > sealed-secret-keys/${cluster}.yaml
