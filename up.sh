@@ -38,7 +38,7 @@ do
   done
   echo "Argocd password"
   kubectl --context kind-$cluster -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
-  kubectl --context kind-$cluster annotate secret -n argocd argocd-secret sealedsecrets.bitnami.com/managed=true
+  #kubectl --context kind-$cluster annotate secret -n argocd argocd-secret sealedsecrets.bitnami.com/managed=true
   #docker network inspect -f '{{.IPAM.Config}}' kind
   helm template argocd-yaml/app-of-apps/ --set runenv="$cluster" --set internaldomain="int-$cluster.kind.learn.entigo.io" --set externaldomain="$cluster.kind.learn.entigo.io" --set iprange="10.250.1.2${i}0-10.250.1.2${i}9" | kubectl --context kind-$cluster apply -n argocd -f-
 

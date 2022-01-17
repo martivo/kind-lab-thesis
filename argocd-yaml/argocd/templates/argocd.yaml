@@ -3542,7 +3542,18 @@ kind: Secret
 metadata:
   name: argocd-notifications-secret
 type: Opaque
-
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  labels:
+    app.kubernetes.io/name: argocd-secret
+    app.kubernetes.io/part-of: argocd
+  annotations:
+    sealedsecrets.bitnami.com/managed: "true"
+    compare-options: IgnoreExtraneous
+  name: argocd-secret
+type: Opaque
 ---
 apiVersion: v1
 kind: Service
