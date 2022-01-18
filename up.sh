@@ -79,6 +79,21 @@ Metallb dashboard 14127
 #locust to prometheus and grafana
 https://github.com/ContainerSolutions/locust_exporter
 
+#TODO
+authelia
+CI/CD
+grafana charts
+registry (harbor)
+bind dns
+locust?
+terraform code
+fake slowness between virtual ips
+application setup
+our own git repository?
+HPA and VPA
+security scanner
+VPN access?
+
 #We have 3 scenarios:
 1) Statless application
 
@@ -95,6 +110,7 @@ With each scenario we will test following situations:
 5) Mariadb Database failure
 6) Monitoring failure and detection
 7) Logging failure and recovery
+8) Simlate large latency between clusters https://medium.com/@kazushi/simulate-high-latency-network-using-docker-containerand-tc-commands-a3e503ea4307
 
 Compare what extra steps are needed in case of a multiple cluster installation and what might be the problematic areas.
 
