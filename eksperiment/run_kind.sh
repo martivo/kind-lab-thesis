@@ -19,20 +19,21 @@ echo "Tööriista käivitamine võttis $(($SECONDS - $START_TIME)) sekundit"
 
 echo "Kontroll kas kõik töötaja masinad on valmis."
 START_TIME=$SECONDS
-foo="1"
+foo=$(kubectl  describe nodes | grep KubeletReady | wc -l)
 while [ "$foo" -lt "8" ]
 do
         sleep 1
-        foo=$(kubectl get nodes | grep Ready | wc -l)
+        foo=$(kubectl  describe nodes | grep KubeletReady | wc -l)
         echo "$foo nodes ready, waiting."
 done
 kubectl get nodes
 echo "Kõik töötaja masinad on valmis $(($SECONDS - $START_TIME)) sekundiga."
-
 MEM_NOW=`free -m | grep Mem | awk '{print $7}'`
 
 echo "Mälukasutuse muutus on $(($MEMORY_AVAIL - $MEM_NOW))"
 free -m
 
-
+START_TIME=$SECONDS
 #kind delete cluster --name multi-a
+echo "Kustutamine võttis $(($SECONDS - $START_TIME)) sekundit."
+

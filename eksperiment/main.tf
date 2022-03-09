@@ -239,7 +239,8 @@ data "local_file" "k3dconf" {
 resource "null_resource" "k3d" {
   triggers = {
     data = data.local_file.k3d.content
-    dataconf = data.local_file.kindconf.content
+    dataconf = data.local_file.k3dconf.content
+    instance = aws_instance.k3d.id
   }
   connection {
       type     = "ssh"
@@ -297,8 +298,8 @@ data "local_file" "minikube" {
 
 resource "null_resource" "minikube" {
   triggers = {
-    data = data.local_file.kind.content
-    dataconf = data.local_file.kindconf.content
+    data = data.local_file.minikube.content
+    instance = aws_instance.minikube.id
   }
   connection {
       type     = "ssh"
@@ -357,6 +358,7 @@ resource "null_resource" "kind" {
   triggers = {
     data = data.local_file.kind.content
     dataconf = data.local_file.kindconf.content
+    instance = aws_instance.kind.id
   }
   connection {
       type     = "ssh"
@@ -415,6 +417,7 @@ data "local_file" "microk8s" {
 resource "null_resource" "microk8s" {
   triggers = {
     data = data.local_file.microk8s.content
+    instance = aws_instance.microk8s.id
   }
   connection {
       type     = "ssh"
