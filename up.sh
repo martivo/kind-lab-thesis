@@ -5,7 +5,7 @@ ls -1 kind-* | while read kindfile
 do
   echo "Creating cluster from configuration file $kindfile"
   kind create cluster --config $kindfile
-  #break
+  break
 done
 
 #List kind clusters
