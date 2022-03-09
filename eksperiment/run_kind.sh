@@ -14,7 +14,7 @@ echo "Tööriista paigaldus võttis $(($SECONDS - $START_TIME)) sekundit"
 echo "Tööriistaga klastri loomine."
 START_TIME=$SECONDS
 free -m
-kind create cluster --config run_kind.yaml --wait
+kind create cluster --config run_kind.yaml
 echo "Tööriista käivitamine võttis $(($SECONDS - $START_TIME)) sekundit"
 
 echo "Kontroll kas kõik töötaja masinad on valmis."
@@ -35,4 +35,4 @@ echo "Mälukasutuse muutus on $(($MEMORY_AVAIL - $MEM_NOW))"
 free -m
 
 
-kind delete cluster --name multi-a
+#kind delete cluster --name multi-a

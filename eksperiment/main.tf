@@ -12,7 +12,7 @@ variable "aws-region" {
 
 
 variable "node-instance-type" {
-  default     = "t3.large"
+  default     = "m5.large" 
   type        = string
   description = "Worker Node EC2 instance type"
 }
@@ -216,14 +216,6 @@ resource "aws_instance" "k3d" {
       source      = "install_prequesites.sh"
       destination = "/home/ubuntu/install_prequesites.sh"
     }
-    provisioner "file" {
-      source      = "run_k3d.sh"
-      destination = "/home/ubuntu/run_k3d.sh"
-    }
-    provisioner "file" {
-      source      = "run_k3d.yaml"
-      destination = "/home/ubuntu/run_k3d.yaml"
-    }
     provisioner "remote-exec" {
       inline = ["chmod +x /home/ubuntu/*.sh", "/home/ubuntu/install_prequesites.sh"]
     }
@@ -236,6 +228,37 @@ resource "aws_instance" "k3d" {
     depends_on = [aws_iam_role.node]
 }
 
+data "local_file" "k3d" {
+  filename = "run_k3d.sh"
+}
+
+data "local_file" "k3dconf" {
+  filename = "run_k3d.yaml"
+}
+
+resource "null_resource" "k3d" {
+  triggers = {
+    data = data.local_file.k3d.content
+    dataconf = data.local_file.kindconf.content
+  }
+  connection {
+      type     = "ssh"
+      user     = "ubuntu"
+      private_key = "${file("~/.ssh/id_rsa")}"
+      host = aws_instance.k3d.public_ip
+  }
+  provisioner "file" {
+    source      = "run_k3d.sh"
+    destination = "/home/ubuntu/run_k3d.sh"
+  }
+  provisioner "file" {
+    source      = "run_k3d.yaml"
+    destination = "/home/ubuntu/run_k3d.yaml"
+  }
+  provisioner "remote-exec" {
+      inline = ["chmod +x /home/ubuntu/*.sh"]
+  }
+}
 
 
 resource "aws_instance" "minikube" {
@@ -255,10 +278,6 @@ resource "aws_instance" "minikube" {
       source      = "install_prequesites.sh"
       destination = "/home/ubuntu/install_prequesites.sh"
     }
-    provisioner "file" {
-      source      = "run_minikube.sh"
-      destination = "/home/ubuntu/run_minikube.sh"
-    }
     provisioner "remote-exec" {
       inline = ["chmod +x /home/ubuntu/*.sh", "/home/ubuntu/install_prequesites.sh"]
     }
@@ -271,7 +290,30 @@ resource "aws_instance" "minikube" {
     depends_on = [aws_iam_role.node]
 }
 
+data "local_file" "minikube" {
+  filename = "run_minikube.sh"
+}
 
+
+resource "null_resource" "minikube" {
+  triggers = {
+    data = data.local_file.kind.content
+    dataconf = data.local_file.kindconf.content
+  }
+  connection {
+      type     = "ssh"
+      user     = "ubuntu"
+      private_key = "${file("~/.ssh/id_rsa")}"
+      host = aws_instance.minikube.public_ip
+  }
+  provisioner "file" {
+    source      = "run_minikube.sh"
+    destination = "/home/ubuntu/run_minikube.sh"
+  }
+  provisioner "remote-exec" {
+      inline = ["chmod +x /home/ubuntu/*.sh"]
+  }
+}
 
 resource "aws_instance" "kind" {
     ami           = data.aws_ami.ubuntu-server.id
@@ -291,14 +333,6 @@ resource "aws_instance" "kind" {
       source      = "install_prequesites.sh"
       destination = "/home/ubuntu/install_prequesites.sh"
     }
-    provisioner "file" {
-      source      = "run_kind.sh"
-      destination = "/home/ubuntu/run_kind.sh"
-    }
-    provisioner "file" {
-      source      = "run_kind.yaml"
-      destination = "/home/ubuntu/run_kind.yaml"
-    }
     provisioner "remote-exec" {
       inline = ["chmod +x /home/ubuntu/*.sh", "/home/ubuntu/install_prequesites.sh"]
     }
@@ -311,6 +345,37 @@ resource "aws_instance" "kind" {
     depends_on = [aws_iam_role.node]
 }
 
+data "local_file" "kind" {
+  filename = "run_kind.sh"
+}
+
+data "local_file" "kindconf" {
+  filename = "run_kind.yaml"
+}
+
+resource "null_resource" "kind" {
+  triggers = {
+    data = data.local_file.kind.content
+    dataconf = data.local_file.kindconf.content
+  }
+  connection {
+      type     = "ssh"
+      user     = "ubuntu"
+      private_key = "${file("~/.ssh/id_rsa")}"
+      host = aws_instance.kind.public_ip
+  }
+  provisioner "file" {
+    source      = "run_kind.sh"
+    destination = "/home/ubuntu/run_kind.sh"
+  }
+  provisioner "file" {
+    source      = "run_kind.yaml"
+    destination = "/home/ubuntu/run_kind.yaml"
+  }
+  provisioner "remote-exec" {
+      inline = ["chmod +x /home/ubuntu/*.sh"]
+  }
+}
 
 resource "aws_instance" "microk8s" {
     ami           = data.aws_ami.ubuntu-server.id
@@ -330,10 +395,6 @@ resource "aws_instance" "microk8s" {
       source      = "install_prequesites.sh"
       destination = "/home/ubuntu/install_prequesites.sh"
     }
-    provisioner "file" {
-      source      = "run_microk8s.sh"
-      destination = "/home/ubuntu/run_microk8s.sh"
-    }
     provisioner "remote-exec" {
       inline = ["chmod +x /home/ubuntu/*.sh", "/home/ubuntu/install_prequesites.sh"]
     }
@@ -344,6 +405,30 @@ resource "aws_instance" "microk8s" {
       host = "${self.public_ip}"
     }
     depends_on = [aws_iam_role.node]
+}
+
+
+data "local_file" "microk8s" {
+  filename = "run_microk8s.sh"
+}
+
+resource "null_resource" "microk8s" {
+  triggers = {
+    data = data.local_file.microk8s.content
+  }
+  connection {
+      type     = "ssh"
+      user     = "ubuntu"
+      private_key = "${file("~/.ssh/id_rsa")}"
+      host = aws_instance.microk8s.public_ip
+  }
+  provisioner "file" {
+    source      = "run_microk8s.sh"
+    destination = "/home/ubuntu/run_microk8s.sh"
+  }
+  provisioner "remote-exec" {
+      inline = ["chmod +x /home/ubuntu/*.sh"]
+  }
 }
 
 output "k3d_ip_addr" {

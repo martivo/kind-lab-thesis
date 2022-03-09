@@ -35,5 +35,5 @@ MEM_NOW=`free -m | grep Mem | awk '{print $7}'`
 echo "Mälukasutuse muutus on $(($MEMORY_AVAIL - $MEM_NOW))"
 free -m
 
-minikube delete
+#minikube delete
 
