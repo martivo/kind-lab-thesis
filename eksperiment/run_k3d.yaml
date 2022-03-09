@@ -12,8 +12,8 @@ options:
     nodeLabels:
       - label: ingress=true 
         nodeFilters:
-          - agent:1
+          - agent:0,1
     extraArgs: # additional arguments passed to the `k3s server|agent` command; same as `--k3s-arg`
       - arg: --node-taint=ingress=true:NoSchedule
         nodeFilters:
-          - server:1
+          - agent:0,1

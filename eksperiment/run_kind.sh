@@ -10,6 +10,7 @@ sudo mv ./kind /usr/bin/kind
 
 echo "Tööriista paigaldus võttis $(($SECONDS - $START_TIME)) sekundit"
 
+sleep 5
 
 echo "Tööriistaga klastri loomine."
 START_TIME=$SECONDS
@@ -34,6 +35,6 @@ echo "Mälukasutuse muutus on $(($MEMORY_AVAIL - $MEM_NOW))"
 free -m
 
 START_TIME=$SECONDS
-#kind delete cluster --name multi-a
+kind delete cluster --name multi-a
 echo "Kustutamine võttis $(($SECONDS - $START_TIME)) sekundit."
 

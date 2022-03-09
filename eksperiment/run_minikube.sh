@@ -17,6 +17,8 @@ minikube start -p myminikube -n 8 --container-runtime docker --driver=docker
 
 echo "Tööriista käivitamine võttis $(($SECONDS - $START_TIME)) sekundit"
 
+sleep 5
+
 echo "Kontroll kas kõik töötaja masinad on valmis."
 START_TIME=$SECONDS
 foo=$(kubectl  describe nodes | grep KubeletReady | wc -l)
@@ -37,5 +39,5 @@ free -m
 
 
 START_TIME=$SECONDS
-#minikube delete -p myminikube
+minikube delete -p myminikube
 echo "Kustutamine võttis $(($SECONDS - $START_TIME)) sekundit."

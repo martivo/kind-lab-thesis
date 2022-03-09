@@ -14,6 +14,8 @@ free -m
 k3d cluster create mycluster --config run_k3d.yaml
 echo "Tööriista käivitamine võttis $(($SECONDS - $START_TIME)) sekundit"
 
+sleep 5
+
 echo "Kontroll kas kõik töötaja masinad on valmis."
 START_TIME=$SECONDS
 foo=$(kubectl  describe nodes | grep KubeletReady | wc -l)
@@ -33,6 +35,6 @@ free -m
 
 
 START_TIME=$SECONDS
-#k3d cluster delete mycluster
+k3d cluster delete mycluster
 echo "Kustutamine võttis $(($SECONDS - $START_TIME)) sekundit."
 

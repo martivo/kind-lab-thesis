@@ -61,6 +61,8 @@ lxc exec microk8s-w5 -- $join_cmd --worker
 
 echo "Tööriista käivitamine võttis $(($SECONDS - $START_TIME)) sekundit"
 
+sleep 5
+
 echo "Kontroll kas kõik töötaja masinad on valmis."
 START_TIME=$SECONDS
 foo=$(lxc exec microk8s-m1 -- microk8s kubectl describe nodes | grep KubeletReady | wc -l)
@@ -81,6 +83,6 @@ free -m
 
 
 START_TIME=$SECONDS
-#lxc delete microk8s-m1 microk8s-m2 microk8s-m3 microk8s-w1 microk8s-w2 microk8s-w3 microk8s-w4 microk8s-w5 --force
+lxc delete microk8s-m1 microk8s-m2 microk8s-m3 microk8s-w1 microk8s-w2 microk8s-w3 microk8s-w4 microk8s-w5 --force
 echo "Kustutamine võttis $(($SECONDS - $START_TIME)) sekundit."
 
