@@ -35,7 +35,7 @@ resource "aws_vpc" "main" {
   enable_dns_hostnames = true
   enable_dns_support   = true
   tags = {
-     "Name" = "eksperiment-vpc"
+     "Name" = "experiment-vpc"
     }
 }
 
@@ -68,7 +68,7 @@ resource "aws_subnet" "public-a" {
   map_public_ip_on_launch = true
 
   tags = {
-     "Name" = "eksperiment-public-a"
+     "Name" = "experiment-public-a"
     }
 }
 
@@ -87,7 +87,7 @@ resource "aws_nat_gateway" "gw-a" {
   depends_on = [aws_internet_gateway.gw]
 
   tags = {
-    "Name" = "eksperiment-gw-a"
+    "Name" = "experiment-gw-a"
   }
 }
 
@@ -100,7 +100,7 @@ resource "aws_route_table" "r-public" {
     gateway_id = aws_internet_gateway.gw.id
   }
   tags = {
-    "Name" = "eksperiment-r-public"
+    "Name" = "experiment-r-public"
   }
 }
 
@@ -115,7 +115,7 @@ resource "aws_subnet" "private-app-a" {
   cidr_block = "10.139.4.0/24"
   availability_zone_id = data.aws_availability_zone.a.zone_id
   tags = {
-     "Name" = "eksperiment-private-app-a"
+     "Name" = "experiment-private-app-a"
     }
 }
 
@@ -130,7 +130,7 @@ resource "aws_route_table" "r-private-a" {
     nat_gateway_id = aws_nat_gateway.gw-a.id
   }
   tags = {
-    Name = "eksperiment-r-private-a"
+    Name = "experiment-r-private-a"
   }
 }
 
@@ -143,7 +143,7 @@ resource "aws_route_table_association" "ra-app-a" {
 
 
 resource "aws_iam_role" "node" {
-  name = "eksperiment-eks-node-role"
+  name = "experiment-eks-node-role"
 
   assume_role_policy = <<POLICY
 {
@@ -163,12 +163,12 @@ POLICY
 
 
 resource "aws_iam_instance_profile" "node" {
-  name = "eksperiment-eks-node-instance-profile"
+  name = "experiment-eks-node-instance-profile"
   role = aws_iam_role.node.name
 }
 
 resource "aws_security_group" "node" {
-  name        = "eksperiment-eks-node-sg"
+  name        = "experiment-eks-node-sg"
   description = "Security group for all nodes in the cluster"
   vpc_id      = aws_vpc.main.id
 
@@ -194,12 +194,12 @@ resource "aws_security_group" "node" {
   }
 
   tags = {
-     "Name" = "eksperiment-eks-node-sg"
+     "Name" = "experiment-eks-node-sg"
     }
 }
 
 
-resource "aws_instance" "master" {
+resource "aws_instance" "k3d" {
     ami           = data.aws_ami.ubuntu-server.id
     instance_type = var.node-instance-type
     subnet_id = aws_subnet.public-a.id
@@ -210,14 +210,35 @@ resource "aws_instance" "master" {
         volume_size = "100"
       }
       tags = {
-        "Name" = "eksperiment-master"
+        "Name" = "experiment-k3d"
       }
+    provisioner "file" {
+      source      = "install_prequesites.sh"
+      destination = "/home/ubuntu/install_prequesites.sh"
+    }
+    provisioner "file" {
+      source      = "run_k3d.sh"
+      destination = "/home/ubuntu/run_k3d.sh"
+    }
+    provisioner "file" {
+      source      = "run_k3d.yaml"
+      destination = "/home/ubuntu/run_k3d.yaml"
+    }
+    provisioner "remote-exec" {
+      inline = ["chmod +x /home/ubuntu/*.sh", "/home/ubuntu/install_prequesites.sh"]
+    }
+    connection {
+      type     = "ssh"
+      user     = "ubuntu"
+      private_key = "${file("~/.ssh/id_rsa")}"
+      host = "${self.public_ip}"
+    }
     depends_on = [aws_iam_role.node]
 }
 
 
 
-resource "aws_instance" "worker-a" {
+resource "aws_instance" "minikube" {
     ami           = data.aws_ami.ubuntu-server.id
     instance_type = var.node-instance-type
     subnet_id = aws_subnet.public-a.id
@@ -228,14 +249,31 @@ resource "aws_instance" "worker-a" {
         volume_size = "100"
       }
       tags = {
-        "Name" = "eksperiment-worker-a"
+        "Name" = "experiment-minikube"
       }
+    provisioner "file" {
+      source      = "install_prequesites.sh"
+      destination = "/home/ubuntu/install_prequesites.sh"
+    }
+    provisioner "file" {
+      source      = "run_minikube.sh"
+      destination = "/home/ubuntu/run_minikube.sh"
+    }
+    provisioner "remote-exec" {
+      inline = ["chmod +x /home/ubuntu/*.sh", "/home/ubuntu/install_prequesites.sh"]
+    }
+    connection {
+      type     = "ssh"
+      user     = "ubuntu"
+      private_key = "${file("~/.ssh/id_rsa")}"
+      host = "${self.public_ip}"
+    }
     depends_on = [aws_iam_role.node]
 }
 
 
 
-resource "aws_instance" "worker-b" {
+resource "aws_instance" "kind" {
     ami           = data.aws_ami.ubuntu-server.id
     instance_type = var.node-instance-type
     subnet_id = aws_subnet.public-a.id
@@ -247,10 +285,83 @@ resource "aws_instance" "worker-b" {
       }
 
       tags = {
-        "Name" = "eksperiment-worker-b"
+        "Name" = "experiment-kind"
       }
+    provisioner "file" {
+      source      = "install_prequesites.sh"
+      destination = "/home/ubuntu/install_prequesites.sh"
+    }
+    provisioner "file" {
+      source      = "run_kind.sh"
+      destination = "/home/ubuntu/run_kind.sh"
+    }
+    provisioner "file" {
+      source      = "run_kind.yaml"
+      destination = "/home/ubuntu/run_kind.yaml"
+    }
+    provisioner "remote-exec" {
+      inline = ["chmod +x /home/ubuntu/*.sh", "/home/ubuntu/install_prequesites.sh"]
+    }
+    connection {
+      type     = "ssh"
+      user     = "ubuntu"
+      private_key = "${file("~/.ssh/id_rsa")}"
+      host = "${self.public_ip}"
+    }
     depends_on = [aws_iam_role.node]
 }
 
 
+resource "aws_instance" "microk8s" {
+    ami           = data.aws_ami.ubuntu-server.id
+    instance_type = var.node-instance-type
+    subnet_id = aws_subnet.public-a.id
+    vpc_security_group_ids = [aws_security_group.node.id]
+    key_name = var.tutor-ssh-key
+    iam_instance_profile = aws_iam_instance_profile.node.name
+      root_block_device {
+        volume_size = "100"
+      }
 
+      tags = {
+        "Name" = "experiment-microk8s"
+      }
+    provisioner "file" {
+      source      = "install_prequesites.sh"
+      destination = "/home/ubuntu/install_prequesites.sh"
+    }
+    provisioner "file" {
+      source      = "run_microk8s.sh"
+      destination = "/home/ubuntu/run_microk8s.sh"
+    }
+    provisioner "remote-exec" {
+      inline = ["chmod +x /home/ubuntu/*.sh", "/home/ubuntu/install_prequesites.sh"]
+    }
+    connection {
+      type     = "ssh"
+      user     = "ubuntu"
+      private_key = "${file("~/.ssh/id_rsa")}"
+      host = "${self.public_ip}"
+    }
+    depends_on = [aws_iam_role.node]
+}
+
+output "k3d_ip_addr" {
+  value       = "ssh ubuntu@${aws_instance.k3d.public_ip}"
+  description = "Pulic ip of k3d."
+}
+
+output "minikube_ip_addr" {
+  value       = "ssh ubuntu@${aws_instance.minikube.public_ip}"
+  description = "Pulic ip of minikube."
+}
+
+output "kind_ip_addr" {
+  value       = "ssh ubuntu@${aws_instance.kind.public_ip}"
+  description = "Pulic ip of kind."
+}
+
+output "microk8s_ip_addr" {
+  value       = "ssh ubuntu@${aws_instance.microk8s.public_ip}"
+  description = "Pulic ip of microk8s."
+}
